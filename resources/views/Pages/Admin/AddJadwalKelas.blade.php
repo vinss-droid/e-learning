@@ -1,19 +1,19 @@
 @extends('Pages.Layout.Dashboard.Dashboard')
-@section('title', "Tambah Jadwal Kelas $Kelas")
+@section('title', "Tambah Mapel Kelas $Kelas")
 @section('content')
 
-<h1 class="h3 mb-2 text-secondary text-center">Tambah Kelas {{ $Kelas }}</h1>
+<h1 class="h3 mb-2 text-secondary text-center">Tambah Mapel Kelas {{ $Kelas }}</h1>
 
 <div class="container">
     <div class="row justify-content-center mt-4">
         <div class="col-sm-12 col-md-12 col-lg-8">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Tambah Jadwal Kelas {{ $Kelas }}</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Tambah Mapel Kelas {{ $Kelas }}</h6>
                 </div>
                 <div class="card-body">
 
-                    <form action="/admin/jadwal-kelas/detail-jadwal-{{ str_replace(' ', '-', $Kelas) }}" method="post">
+                    <form action="/admin/mapel-kelas/daftar-mapel-{{ str_replace(' ', '-', $Kelas) }}" method="post">
                         @csrf
                         <button type="submit" class="btn btn-warning btn-sm mb-4">Kembali</button>
                     </form>
@@ -27,7 +27,7 @@
                         </div>
                     @endif
 
-                    <form action="/admin/save-jadwal-kelas-{{ str_replace(' ', '-', $Kelas) }}" method="POST">
+                    <form action="/admin/save-mapel-kelas-{{ str_replace(' ', '-', $Kelas) }}" method="POST">
                         @csrf
                         
                         <div class="row">

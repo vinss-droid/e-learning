@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TeachersController;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -27,13 +28,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
-Route::group(['middleware' => ['auth', 'guru']], function () {
-    Route::get('/guru', [AdminController::class, 'index'])->name('dashboardGuru');
-});
-
-
-
-// Admin
+// ------------------ Admin -----------------
 
 // Route::get('/daftar-guru', [AdminController::class, 'guru'])->name('guru');
 Route::group(['middleware' => ['auth', 'admin']], function () {
@@ -46,6 +41,14 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/admin/edit-user/{id}', [AdminController::class, 'editUser'])->name('editUser');
     Route::put('/admin/update-user/{id}', [AdminController::class, 'updateUser'])->name('updateUser');
     Route::delete('/admin/delete-user/{id}', [AdminController::class, 'deleteUser'])->name('deleteUser');
+
+    // Grades
+    Route::get('/admin/daftar-tingkatan', [AdminController::class, 'grades'])->name('grades');
+    Route::get('/admin/tambah-daftar-tingkatan', [AdminController::class, 'addGrades'])->name('addGrades');
+    Route::post('/admin/save-daftar-tingkatan', [AdminController::class, 'saveGrades'])->name('saveGrades');
+    Route::get('/admin/edit-daftar-tingkatan/{id}', [AdminController::class, 'editGrades'])->name('editGrades');
+    Route::put('/admin/update-daftar-tingkatan/{id}', [AdminController::class, 'updateGrades'])->name('updateGrades');
+    Route::delete('/admin/delete-daftar-tingkatan/{id}', [AdminController::class, 'deleteGrades'])->name('deleteGrades');
 
     // Kelas
     Route::get('/admin/daftar-kelas', [AdminController::class, 'kelas'])->name('kelas');
@@ -71,19 +74,38 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::put('/admin/update-mapel/{id}', [AdminController::class, 'updateMapel'])->name('updateMapel');
     Route::delete('/admin/delete-mapel/{id}', [AdminController::class, 'deleteMapel'])->name('deleteMapel');
 
-    // Jadwal
-    Route::get('/admin/jadwal-kelas', [AdminController::class, 'jadwal'])->name('jadwal');
-    Route::get('/admin/jadwal-kelas/detail-jadwal-{kelas}', [AdminController::class, 'detailJadwal'])->name('detailJadwal');
-    Route::post('/admin/jadwal-kelas/detail-jadwal-{kelas}', [AdminController::class, 'detailJadwal'])->name('detailJadwal');
-    Route::get('/admin/tambah-jadwal-kelas-{kelas}', [AdminController::class, 'addJadwalKelas'])->name('addJadwalKelas');
-    Route::post('/admin/tambah-jadwal-kelas-{kelas}', [AdminController::class, 'addJadwalKelas'])->name('addJadwalKelas');
-    Route::get('/admin/save-jadwal-kelas-{kelas}', [AdminController::class, 'saveJadwalKelas'])->name('saveJadwalKelas');
-    Route::post('/admin/save-jadwal-kelas-{kelas}', [AdminController::class, 'saveJadwalKelas'])->name('saveJadwalKelas');
-    Route::delete('/admin/delete-jadwal-kelas-{kelas}/{id}', [AdminController::class, 'deleteJadwal'])->name('deleteJadwal');
+    // Mapel
+    Route::get('/admin/mapel-kelas', [AdminController::class, 'jadwal'])->name('jadwal');
+    Route::get('/admin/mapel-kelas/daftar-mapel-{kelas}', [AdminController::class, 'detailJadwal'])->name('detailJadwal');
+    Route::post('/admin/mapel-kelas/daftar-mapel-{kelas}', [AdminController::class, 'detailJadwal'])->name('detailJadwal');
+    Route::get('/admin/tambah-mapel-kelas-{kelas}', [AdminController::class, 'addJadwalKelas'])->name('addJadwalKelas');
+    Route::post('/admin/tambah-mapel-kelas-{kelas}', [AdminController::class, 'addJadwalKelas'])->name('addJadwalKelas');
+    Route::get('/admin/save-mapel-kelas-{kelas}', [AdminController::class, 'saveJadwalKelas'])->name('saveJadwalKelas');
+    Route::post('/admin/save-mapel-kelas-{kelas}', [AdminController::class, 'saveJadwalKelas'])->name('saveJadwalKelas');
+    Route::delete('/admin/delete-mapel-kelas-{kelas}/{id}', [AdminController::class, 'deleteJadwal'])->name('deleteJadwal');
 
 });
 
-// Siswa
+// --------------------- Guru ----------------------
+
+Route::group(['middleware' => ['auth', 'guru']], function () {
+
+    Route::get('/guru', [TeachersController::class, 'index'])->name('dashboardGuru');
+    Route::get('/guru/mata-pelajaran', [TeachersController::class, 'mapel'])->name('Tmapel');
+    Route::get('/guru/mata-pelajaran/{grade}/tugas-mata-pelajaran-{mapel}', [TeachersController::class, 'tugasMapel'])->name('tugasMapel');
+    Route::post('/guru/mata-pelajaran/{grade}/tugas-mata-pelajaran-{mapel}', [TeachersController::class, 'tugasMapel'])->name('tugasMapel');
+
+    Route::get('/guru/mata-pelajaran/{grade}/tambah-tugas-mata-pelajaran-{mapel}', [TeachersController::class, 'addTugas'])->name('addTugas');
+    Route::post('/guru/mata-pelajaran/{grade}/save-tugas-mata-pelajaran-{mapel}', [TeachersController::class, 'saveTugas'])->name('saveTugas');
+    Route::get('/guru/mata-pelajaran/lihat/tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'lihatTugas'])->name('lihatTugas');
+    Route::get('/guru/mata-pelajaran/download/file-tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'downloadFileTugas'])->name('downloadFileTugas');
+    Route::get('/guru/mata-pelajaran/edit/tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'editTugas'])->name('editTugas');
+    Route::post('/guru/mata-pelajaran/update/tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'updateTugas'])->name('updateTugas');
+    Route::delete('/guru/mata-pelajaran/delete/tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'hapusTugas'])->name('hapusTugas');
+
+});
+
+// -------------------- Siswa --------------------
 
 Route::group(['middleware' => ['auth', 'siswa']], function () {
     Route::get('/mapel', [MapelController::class, 'index'])->name('mapel');

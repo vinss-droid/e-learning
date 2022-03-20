@@ -1,8 +1,8 @@
 @extends('Pages.Layout.Dashboard.Dashboard')
-@section('title', "Jadwal Kelas $Kelas ")
+@section('title', "Mapel Kelas $Kelas ")
 @section('content')
 
-<h1 class="h3 mb-2 text-gray-800 text-center">Daftar Jadwal Kelas {{ $Kelas }}</h1>
+<h1 class="h3 mb-2 text-gray-800 text-center">Daftar Mapel Kelas {{ $Kelas }}</h1>
 
 @if (session('berhasil'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -20,14 +20,14 @@
     </div>
 @elseif (session('hapus'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-         Jadwal kelas berhasil di hapus
+        Mapel kelas berhasil di hapus
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
 @elseif (session('Verorr'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        Jadwal kelas berhasil di hapus
+        Mapel kelas sudah ada!
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -36,15 +36,15 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Daftar Jadwal Kelas {{ $Kelas }}</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Daftar Mapel Kelas {{ $Kelas }}</h6>
     </div>
     <div class="card-body">
         <div class="mb-3">
             <a href="{{ route('jadwal') }}" class="btn btn-warning btn-sm d-inline">Kembali</a>
-            <form action="/admin/tambah-jadwal-kelas-{{ str_replace(' ', '-', $Kelas) }}" method="post" class="d-inline">
+            <form action="/admin/tambah-mapel-kelas-{{ str_replace(' ', '-', $Kelas) }}" method="post" class="d-inline">
                 @csrf
                 <button type="submit" class="btn btn-primary btn-sm">
-                    Tambah Jadwal
+                    Tambah Mapel
                 </button>
             </form>
         </div>
@@ -80,7 +80,7 @@
                         </td>
                         <td class="col-2">
                             <center>
-                                <form action="/admin/delete-jadwal-kelas-{{ str_replace(' ', '-', $j->kelas) }}/{{ $j->id }}" method="POST" class="d-inline">
+                                <form action="/admin/delete-mapel-kelas-{{ str_replace(' ', '-', $j->kelas) }}/{{ $j->id }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">

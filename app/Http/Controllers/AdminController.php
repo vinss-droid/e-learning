@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\User;
 use App\Models\Grade;
-use App\Models\Jadwal;
 use App\Models\Kelas;
 use App\Models\Mapel;
-use Exception;
+use App\Models\Jadwal;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Laravel\Ui\Presets\React;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
@@ -298,7 +299,7 @@ class AdminController extends Controller
         ]);
 
         $data = [
-            'kelas' => $request->kelas,
+            'kelas' => strtoupper($request->kelas),
             'id_walas' => $request->walas,
             'id_grade' => $request->grade,
         ];
@@ -339,7 +340,7 @@ class AdminController extends Controller
         ]);
 
         $data = [
-            'kelas' => $request->kelas,
+            'kelas' => strtoupper($request->kelas),
             'id_walas' => $request->walas,
         ];
 
@@ -407,7 +408,7 @@ class AdminController extends Controller
         $data = [
             'id_guru' => $request->guru,
             'id_grade' => $request->grade,
-            'mapel' => $request->mapel,
+            'mapel' => ucwords($request->mapel),
             'produktif' => $request->produktif,
             'img' => $fileName,
         ];
@@ -466,7 +467,7 @@ class AdminController extends Controller
             $data = [
                 'id_guru' => $request->guru,
                 'id_grade' => $request->grade,
-                'mapel' => $request->mapel,
+                'mapel' => ucwords($request->mapel),
                 'produktif' => $request->produktif,
                 // 'img' => $fileName,
             ];
@@ -604,9 +605,9 @@ class AdminController extends Controller
 
         $Kelas = str_replace('-', ' ', $kelas);
 
-        $url = "/admin/jadwal-kelas/detail-jadwal-" . $kelas;
+        $url = "/admin/mapel-kelas/daftar-mapel-" . $kelas;
 
-        $urlError = "admin/tambah-jadwal-kelas-" . $kelas;
+        $urlError = "admin/tambah-mapel-kelas-" . $kelas;
 
         $cek = Kelas::where('kelas', $Kelas)->get();
 
@@ -643,11 +644,112 @@ class AdminController extends Controller
 
         // dd($id);
 
-        $url = "/admin/jadwal-kelas/detail-jadwal-" . $kelas;
+        $url = "/admin/mapel-kelas/daftar-mapel-" . $kelas;
 
         Jadwal::find($id)->delete();
 
         return Redirect::to($url)->with('hapus', 'deleted');
+    }
+
+    public function grades()
+    {
+        $grade = Grade::orderBy('grade', 'ASC')->get();
+
+        return view('Pages.Admin.DaftarGrades', compact('grade'));
+    }
+
+    public function addGrades()
+    {
+        return view('Pages.Admin.AddGrades');
+    }
+
+    public function saveGrades(Request $request)
+    {
+        $request->validate([
+            'grades' => 'required|unique:grades,grade',
+        ],
+        [
+            'grades.required' => 'Tingkatan wajib di isi!',
+            'grades.unique' => 'Tingkatan sudah ada!'
+        ]);
+
+        $data = [
+            'grade' => strtoupper($request->grades),
+        ];
+
+        // dd($request->all());
+
+        Grade::create($data);
+
+        return redirect()->route('grades')->with('berhasil', 'sukses');
+    }
+
+    public function editGrades($id)
+    {
+
+        $ID  = Crypt::decrypt($id);
+
+        $grade = Grade::find($ID);
+
+        return view('Pages.Admin.EditGrades', compact('grade'));
+    }
+
+    public function updateGrades(Request $request, $id)
+    {
+
+        $ID = Crypt::decrypt($id);
+
+        $cek = Grade::find($ID);
+
+        // dd($request->grades == $cek->grade);
+
+        if ($request->grades == $cek->grade) {
+            $request->validate([
+                'grades' => 'required',
+            ],
+            [
+                'grades.required' => 'Tingkatan wajib di isi!',
+                // 'grades.unique' => 'Tingkatan sudah ada!'
+            ]);
+    
+            $data = [
+                'grade' => strtoupper($request->grades),
+            ];
+    
+            // dd($request->all());
+    
+            Grade::find($ID)->update($data);
+    
+            return redirect()->route('grades')->with('edit', 'edit');
+        } else {
+            $request->validate([
+                'grades' => 'required|unique:grades,grade',
+            ],
+            [
+                'grades.required' => 'Tingkatan wajib di isi!',
+                'grades.unique' => 'Tingkatan sudah ada!'
+            ]);
+    
+            $data = [
+                'grade' => strtoupper($request->grades),
+            ];
+    
+            // dd($request->all());
+    
+            Grade::find($ID)->update($data);
+
+            return redirect()->route('grades')->with('edit', 'edit');
+        }
+        
+    }
+
+    public function deleteGrades($id)
+    {
+        $ID = Crypt::decrypt($id);
+
+        Grade::find($ID)->delete();
+
+        return redirect()->route('grades')->with('hapus', 'deleted');
     }
 
 

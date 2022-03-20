@@ -21,49 +21,69 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        DATA LAIN-LAIN
-    </div>
+    @if (Auth::user()->level == 'admin')
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            DATA LAIN-LAIN
+        </div>
 
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('kelas') }}">
-            <i class="fa-solid fa-school"></i>
-            <span>Daftar Kelas</span>
-        </a>
-    </li>
-    
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin-mapel') }}">
-            <i class="fa-solid fa-book"></i>
-            <span>Daftar Mapel</span>
-        </a>
-    </li>
-    
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('jadwal') }}">
-            <i class="fa-solid fa-calendar-days"></i>
-            <span>Daftar Jadwal</span>
-        </a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('grades') }}">
+                <i class="fa-solid fa-signal"></i>
+                <span>Daftar Tingkatan</span>
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('kelas') }}">
+                <i class="fa-solid fa-school"></i>
+                <span>Daftar Kelas</span>
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin-mapel') }}">
+                <i class="fa-solid fa-book"></i>
+                <span>Daftar Mapel</span>
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('jadwal') }}">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span>Daftar Mapel Kelas</span>
+            </a>
+        </li>
 
-    <div class="sidebar-heading">
-        DATA USER
-    </div>
+        <div class="sidebar-heading">
+            DATA USER
+        </div>
 
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('user') }}">
-            <i class="fas fa-users fa-cog"></i>
-            <span>Daftar Pengguna</span>
-        </a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('user') }}">
+                <i class="fas fa-users fa-cog"></i>
+                <span>Daftar Pengguna</span>
+            </a>
+        </li>
 
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('guru') }}">
-            <i class="fas fa-users fa-cog"></i>
-            <span>Daftar Guru</span>
-        </a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('guru') }}">
+                <i class="fas fa-users fa-cog"></i>
+                <span>Daftar Guru</span>
+            </a>
+        </li>
+    @else
+        <div class="sidebar-heading">
+            MATA PELAJARAN
+        </div>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('Tmapel') }}">
+                <i class="fa-solid fa-book"></i>
+                <span>Daftar Mapel</span>
+            </a>
+        </li>
+    @endif
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">

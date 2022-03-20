@@ -1,8 +1,8 @@
 @extends('Pages.Layout.Dashboard.Dashboard')
-@section('title', 'Daftar Mapel Kelas')
+@section('title', 'Guru - Mata Pelajaran')
 @section('content')
 
-<h1 class="h3 mb-2 text-gray-800">Daftar Mapel Kelas</h1>
+<h1 class="h3 mb-2 text-gray-800 text-center">Daftar Mata Pelajaran</h1>
 
 @if (session('berhasil'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -29,7 +29,7 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Daftar Mapel Kelas</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Daftar Mata Pelajaran</h6>
     </div>
     <div class="card-body">
         {{-- <a href="{{ route('addKelas') }}" class="btn btn-primary btn-sm mb-4">
@@ -40,7 +40,9 @@
                 <thead>
                     <tr>
                         <th class="col-1">No</th>
-                        <th class="col-3">Kelas</th>
+                        <th class="col-3">Mapel</th>
+                        <th class="col-2">Tingkatan</th>
+                        <th class="col-2">Produktif</th>
                         <th class="col-3">Action</th>
                     </tr>
                 </thead>
@@ -49,15 +51,23 @@
                     $no = 1;
                 @endphp
                 
-                @foreach ($kelas as $k)
+                @foreach ($mapel as $m)
                     
                 <tbody>
                     <tr>
                         <td class="col-1 text-center">{{ $no++ }}</td>
-                        <td class="col-3">{{ $k->kelas }}</td>
+                        <td class="col-3">{{ $m->mapel }}</td>
+                        <td class="col-2">{{ $m->grade }}</td>
+                        <td class="col-2">
+                            @if ($m->produktif == 0)
+                                {{ 'TIDAK' }}
+                            @else
+                                {{ 'IYA' }}
+                            @endif
+                        </td>
                         <td class="col-3">
                             <center>
-                                <form action="/admin/mapel-kelas/daftar-mapel-{{ str_replace(' ', '-', $k->kelas) }}" method="POST" class="d-inline">
+                                <form action="/guru/mata-pelajaran/{{ $m->grade }}/tugas-mata-pelajaran-{{ str_replace(' ','-', $m->mapel) }}" method="POST" class="d-inline">
                                     @csrf
                                     <button type="submit" class="btn btn-warning btn-sm">
                                         <i class="fa-solid fa-eye"></i> Lihat Mapel
@@ -74,4 +84,5 @@
         </div>
     </div>
 </div>
+
 @endsection

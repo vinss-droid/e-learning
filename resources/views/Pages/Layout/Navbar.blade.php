@@ -32,7 +32,7 @@
                 <li><a class="dropdown-item" href="
                     @if (Auth::user()->level == 'admin')
                       {{ route('dashboardAdmin') }}
-                    @elseif(Auth::user()->levek == 'guru')
+                    @elseif(Auth::user()->level == 'guru')
                       {{ route('dashboardGuru') }}
                     @else
                       #
