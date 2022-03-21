@@ -97,11 +97,11 @@ Route::group(['middleware' => ['auth', 'guru']], function () {
 
     Route::get('/guru/mata-pelajaran/{grade}/tambah-tugas-mata-pelajaran-{mapel}', [TeachersController::class, 'addTugas'])->name('addTugas');
     Route::post('/guru/mata-pelajaran/{grade}/save-tugas-mata-pelajaran-{mapel}', [TeachersController::class, 'saveTugas'])->name('saveTugas');
-    Route::get('/guru/mata-pelajaran/lihat/tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'lihatTugas'])->name('lihatTugas');
-    Route::get('/guru/mata-pelajaran/download/file-tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'downloadFileTugas'])->name('downloadFileTugas');
-    Route::get('/guru/mata-pelajaran/edit/tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'editTugas'])->name('editTugas');
-    Route::post('/guru/mata-pelajaran/update/tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'updateTugas'])->name('updateTugas');
-    Route::delete('/guru/mata-pelajaran/delete/tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'hapusTugas'])->name('hapusTugas');
+    Route::get('/guru/mata-pelajaran/lihat/{grade}/tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'lihatTugas'])->name('lihatTugas');
+    Route::get('/guru/mata-pelajaran/download/{grade}/file-tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'downloadFileTugas'])->name('downloadFileTugas');
+    Route::get('/guru/mata-pelajaran/edit/{grade}/tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'editTugas'])->name('editTugas');
+    Route::put('/guru/mata-pelajaran/update/{grade}/tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'updateTugas'])->name('updateTugas');
+    Route::delete('/guru/mata-pelajaran/delete/{grade}/tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'hapusTugas'])->name('hapusTugas');
 
 });
 

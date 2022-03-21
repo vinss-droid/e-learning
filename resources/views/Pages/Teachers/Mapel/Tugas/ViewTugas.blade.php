@@ -36,14 +36,14 @@
             <div class="row justify-content-center mt-4">
                 <div class="col-sm-12 col-lg-10">
                     <div class="mb-3">
-                        <a href="/guru/mata-pelajaran/tugas-mata-pelajaran-{{ str_replace(' ','-', $Mapel) }}" class="btn btn-warning btn-sm shadow">
+                        <a href="/guru/mata-pelajaran/{{ $grade }}/tugas-mata-pelajaran-{{ str_replace(' ','-', $Mapel) }}" class="btn btn-warning btn-sm shadow">
                             Kembali
                         </a>
                         @foreach ($tugas as $t)
-                            <a href="/guru/mata-pelajaran/edit/tugas-mata-pelajaran-{{ str_replace(' ','-', $Mapel) }}/{{ $t->week }}" class="btn btn-primary btn-sm shadow">
+                            <a href="/guru/mata-pelajaran/edit/{{ $grade }}/tugas-mata-pelajaran-{{ str_replace(' ','-', $Mapel) }}/{{ $t->week }}" class="btn btn-primary btn-sm shadow">
                                 Edit Tugas
                             </a>
-                            <form action="/guru/mata-pelajaran/delete/tugas-mata-pelajaran-{{ str_replace(' ','-', $Mapel) }}/{{ $t->week }}" class="d-inline" method="POST">
+                            <form action="/guru/mata-pelajaran/delete/{{ $grade }}/tugas-mata-pelajaran-{{ str_replace(' ','-', $Mapel) }}/{{ $t->week }}" class="d-inline" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm shadow">
@@ -92,7 +92,7 @@
                                                 @if ($t->file != NULL)
                                                     <div class="mt-4">
                                                         <h5 class="font-weight-bold text-center">File Materi & Tugas :</h5>
-                                                        <a href="/guru/mata-pelajaran/download/file-tugas-mata-pelajaran-{{ str_replace(' ','-', $Mapel) }}/{{ $t->week }}" class="btn btn-success btn-sm btn-block shadow"><i class="fa-solid fa-download"></i> Unduh File</a>
+                                                        <a href="/guru/mata-pelajaran/download/{{ $grade }}/file-tugas-mata-pelajaran-{{ str_replace(' ','-', $Mapel) }}/{{ $t->week }}" class="btn btn-success btn-sm btn-block shadow"><i class="fa-solid fa-download"></i> Unduh File</a>
                                                     </div>
                                                 @endif
                                             </div>

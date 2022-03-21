@@ -68,7 +68,7 @@
                         </td>
                         <td class="col-3">
                             <center>
-                                <a href="/guru/mata-pelajaran/lihat/tugas-mata-pelajaran-{{ str_replace(' ','-', $Mapel) }}/{{ $t->week }}" class="btn btn-warning btn-sm">
+                                <a href="/guru/mata-pelajaran/lihat/{{ $grade }}/tugas-mata-pelajaran-{{ str_replace(' ','-', $Mapel) }}/{{ $t->week }}" class="btn btn-warning btn-sm">
                                     <i class="fa-solid fa-eye"></i> Lihat Tugas
                                 </a>
                                 <a href="#" class="btn btn-success btn-sm">

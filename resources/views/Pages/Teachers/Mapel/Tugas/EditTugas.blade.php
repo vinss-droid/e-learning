@@ -12,13 +12,13 @@
                     <h6 class="m-0 font-weight-bold text-primary">Edit Tugas Mapel {{ $Mapel }}</h6>
                 </div>
                 <div class="card-body">
-                    <a href="/guru/mata-pelajaran/lihat/tugas-mata-pelajaran-{{ str_replace(' ', '-', $Mapel) }}/{{ $tugas->week }}" class="btn btn-warning btn-sm mb-4">
+                    <a href="/guru/mata-pelajaran/lihat/{{ $grade }}/tugas-mata-pelajaran-{{ str_replace(' ', '-', $Mapel) }}/{{ $tugas->week }}" class="btn btn-warning btn-sm mb-4">
                         Kembali
                     </a>
                     
-                    <form action="/guru/mata-pelajaran/update/tugas-mata-pelajaran-{{ str_replace(' ', '-', $Mapel) }}/{{ $tugas->week }}" method="POST" enctype="multipart/form-data">
+                    <form action="/guru/mata-pelajaran/update/{{ $grade }}/tugas-mata-pelajaran-{{ str_replace(' ', '-', $Mapel) }}/{{ $tugas->week }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        
+                        @method('PUT')
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg-6">
                                 <div class="mb-3">

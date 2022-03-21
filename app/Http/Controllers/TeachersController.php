@@ -168,12 +168,19 @@ class TeachersController extends Controller
 
     }
 
-    public function lihatTugas($mapel, $week)
+    public function lihatTugas($grade, $mapel, $week)
     {
 
         $Mapel = str_replace('-', ' ', $mapel);
 
-        $cek = Mapel::where('mapel', $Mapel)->get();
+        $grade = Grade::where('grade', $grade)->get();
+
+        foreach($grade as $g) {
+            $id_grade = $g->id;
+            $grade = $g->grade;
+        }
+
+        $cek = Mapel::where(['id_grade' => $id_grade, 'mapel' => $Mapel])->get();
 
         // dd($mapel);
 
@@ -189,6 +196,8 @@ class TeachersController extends Controller
                 $id_tugas = $t->id;
             }
     
+            // dd($id_tugas);
+
             $tugas = DB::table('tugas')
                         ->join('mapels', 'tugas.id_mapel', '=', 'mapels.id')
                         ->join('grades', 'mapels.id_grade', '=', 'grades.id')
@@ -199,17 +208,24 @@ class TeachersController extends Controller
                     
             // dd($tugas);
     
-            return view('Pages.Teachers.Mapel.Tugas.ViewTugas', compact('tugas', 'Mapel'));
+            return view('Pages.Teachers.Mapel.Tugas.ViewTugas', compact('tugas', 'Mapel', 'grade'));
         } catch (Exception $e) {
-            return $e;
+            abort(404);
         }
     }
 
-    public function downloadFileTugas($mapel, $week)
+    public function downloadFileTugas($grade, $mapel, $week)
     {
         $Mapel = str_replace('-', ' ', $mapel);
 
-        $cek = Mapel::where('mapel', $Mapel)->get();
+        $grade = Grade::where('grade', $grade)->get();
+
+        foreach($grade as $g) {
+            $id_grade = $g->id;
+            $grade = $g->grade;
+        }
+
+        $cek = Mapel::where(['id_grade' => $id_grade, 'mapel' => $Mapel])->get();
 
         // dd($mapel);
 
@@ -245,11 +261,18 @@ class TeachersController extends Controller
         }
     }
 
-    public function editTugas($mapel, $week)
+    public function editTugas($grade, $mapel, $week)
     {
         $Mapel = str_replace('-', ' ', $mapel);
 
-        $cek = Mapel::where('mapel', $Mapel)->get();
+        $grade = Grade::where('grade', $grade)->get();
+
+        foreach($grade as $g) {
+            $id_grade = $g->id;
+            $grade = $g->grade;
+        }
+
+        $cek = Mapel::where(['id_grade' => $id_grade, 'mapel' => $Mapel])->get();
 
         try {
             foreach ($cek as $c) {
@@ -264,21 +287,28 @@ class TeachersController extends Controller
     
             $tugas = Tugas::find($id_tugas);
     
-            return view('Pages.Teachers.Mapel.Tugas.EditTugas', compact('tugas', 'Mapel'));
+            return view('Pages.Teachers.Mapel.Tugas.EditTugas', compact('tugas', 'Mapel', 'grade'));
         } catch (Exception $e) {
             abort(404);
         }
     }
 
-    public function updateTugas(Request $request, $mapel, $week)
+    public function updateTugas(Request $request, $grade, $mapel, $week)
     {
-        $url = 'guru/mata-pelajaran/lihat/tugas-mata-pelajaran-' . $mapel . '/' .  $week ;
 
         $Mapel = str_replace('-', ' ', $mapel);
 
-        $cek = Mapel::where('mapel', $Mapel)->get();
+        $grade = Grade::where('grade', $grade)->get();
+
+        foreach($grade as $g) {
+            $id_grade = $g->id;
+            $grade = $g->grade;
+        }
+
+        $cek = Mapel::where(['id_grade' => $id_grade, 'mapel' => $Mapel])->get();
 
         try {
+
             foreach ($cek as $c) {
                 $id_mapel = $c->id;
             }
@@ -306,6 +336,8 @@ class TeachersController extends Controller
                     'tugas.required' => 'Tugas wajib di isi!'
                 ]);
         
+                $url = '/guru/mata-pelajaran/lihat/' . $grade . '/tugas-mata-pelajaran-' . $mapel . '/' .  strtoupper($request->week);
+
                 $deadline = date('d-m-Y H:i', strtotime($request->deadline));
         
                 $data = [
@@ -340,6 +372,8 @@ class TeachersController extends Controller
                     'deskripsi.required' => 'Deskripsi wajib di isi!',
                     'tugas.required' => 'Tugas wajib di isi!'
                 ]);
+
+                $url = '/guru/mata-pelajaran/lihat/' . $grade . '/tugas-mata-pelajaran-' . $mapel . '/' .  strtoupper($request->week);
         
                 $deadline = date('d-m-Y H:i', strtotime($request->deadline));
         
@@ -367,13 +401,20 @@ class TeachersController extends Controller
         }
     }
 
-    public function hapusTugas($mapel, $week)
+    public function hapusTugas($grade, $mapel, $week)
     {
-        $url = 'guru/mata-pelajaran/tugas-mata-pelajaran-' . $mapel;
+        $url = 'guru/mata-pelajaran/' . $grade . '/tugas-mata-pelajaran-' . $mapel;
 
         $Mapel = str_replace('-', ' ', $mapel);
 
-        $cek = Mapel::where('mapel', $Mapel)->get();
+        $grade = Grade::where('grade', $grade)->get();
+
+        foreach($grade as $g) {
+            $id_grade = $g->id;
+            $grade = $g->grade;
+        }
+
+        $cek = Mapel::where(['id_grade' => $id_grade, 'mapel' => $Mapel])->get();
 
         try {
             foreach ($cek as $c) {
