@@ -270,6 +270,7 @@ class AdminController extends Controller
         $kelas = DB::table('kelas')
                     ->join('users', 'kelas.id_walas', '=', 'users.id')
                     ->orderBy('kelas', 'ASC')
+                    ->select('kelas.*', 'users.name')
                     ->get();
 
         return view('Pages.Admin.DaftarKelas', compact('kelas'));
@@ -319,6 +320,7 @@ class AdminController extends Controller
         $kelas = DB::table('kelas')
                     ->join('users', 'kelas.id_walas', '=', 'users.id')
                     ->where('kelas.id', $id)
+                    ->select('kelas.*', 'users.name')
                     ->get();
 
         $walas = User::orderBy('name', 'ASC')->where('level', 'guru')->get();

@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\TeachersController;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -95,6 +96,8 @@ Route::group(['middleware' => ['auth', 'guru']], function () {
     Route::get('/guru/mata-pelajaran/{grade}/tugas-mata-pelajaran-{mapel}', [TeachersController::class, 'tugasMapel'])->name('tugasMapel');
     Route::post('/guru/mata-pelajaran/{grade}/tugas-mata-pelajaran-{mapel}', [TeachersController::class, 'tugasMapel'])->name('tugasMapel');
 
+    // Tugas
+
     Route::get('/guru/mata-pelajaran/{grade}/tambah-tugas-mata-pelajaran-{mapel}', [TeachersController::class, 'addTugas'])->name('addTugas');
     Route::post('/guru/mata-pelajaran/{grade}/save-tugas-mata-pelajaran-{mapel}', [TeachersController::class, 'saveTugas'])->name('saveTugas');
     Route::get('/guru/mata-pelajaran/lihat/{grade}/tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'lihatTugas'])->name('lihatTugas');
@@ -103,10 +106,22 @@ Route::group(['middleware' => ['auth', 'guru']], function () {
     Route::put('/guru/mata-pelajaran/update/{grade}/tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'updateTugas'])->name('updateTugas');
     Route::delete('/guru/mata-pelajaran/delete/{grade}/tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'hapusTugas'])->name('hapusTugas');
 
+    // Pengumpulan Tugas
+    Route::get('/guru/mata-pelajaran/pengumpulan-tugas/{grade}/tugas-mata-pelajaran-{mapel}/{week}', [TeachersController::class, 'pengumpulanTugas'])->name('pengumpulanTugas');
+    Route::get('/guru/mata-pelajaran/pengumpulan-tugas/{grade}/tugas-mata-pelajaran-{mapel}/{week}/{kelas}', [TeachersController::class, 'pengumpulanTugasKelas'])->name('pengumpulanTugasKelas');
+    Route::get('/guru/mata-pelajaran/download-tugas/{grade}/tugas-mata-pelajaran-{mapel}/{week}/{kelas}/{id}', [TeachersController::class, 'downloadTugasSiswa'])->name('downloadTugasSiswa');
+    Route::get('/guru/mata-pelajaran/report-tugas/{grade}/tugas-mata-pelajaran-{mapel}/{week}/{kelas}', [TeachersController::class, 'excelTugasKelasWeek'])->name('excelTugasKelasWeek');
+
 });
 
 // -------------------- Siswa --------------------
 
 Route::group(['middleware' => ['auth', 'siswa']], function () {
+    // Mapel
     Route::get('/mapel', [MapelController::class, 'index'])->name('mapel');
+    Route::get('/siswa/tugas-mata-pelajaran-{mapel}', [StudentsController::class, 'lihatMapel'])->name('lihatMapel');
+    Route::get('/siswa/lihat/tugas-mata-pelajaran-{mapel}/{week}', [StudentsController::class, 'lihatTugas'])->name('lihatTugas');
+    Route::get('/siswa/download/tugas-mata-pelajaran-{mapel}/{week}', [StudentsController::class, 'downloadFileTugas'])->name('downloadFileTugas');
+    Route::get('/siswa/pengumpulan-tugas/tugas-mata-pelajaran-{mapel}/{week}', [StudentsController::class, 'pengumpulanTugas'])->name('pengumpulanTugas');
+    Route::post('/siswa/pengumpulan-tugas/tugas-mata-pelajaran-{mapel}/{week}', [StudentsController::class, 'savePengumpulanTugas'])->name('savePengumpulanTugas');
 });

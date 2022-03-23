@@ -88,102 +88,24 @@
                 <a href="{{ route('mapel') }}" class="btn btn-outline-primary text-decoration-none lht ms-auto">Lihat Semua</a>
             </div>
             <div class="row row-mp-items justify-content-center mb-3 mt-5">
-                <div class="col-md-3">
-                    <div class="card shadow mpl-hm"
-                        data-aos="fade-down"
-                        data-aos-delay="50"
-                    >
-                        <div class="card-header">
-                            <img src="{{ asset('icon/svg/inggris.svg') }}" alt="" width="100%">
-                        </div>
-                        <div class="card-body">
-                            <h4 class="text-center fw-bold">B.Inggris</h4>
-                            <div class="d-grid mt-4">
-                                <a href="" class="btn btn-mpl">Lihat Pelajaran</a>
+                @foreach ($mapel as $m)
+                    <div class="col-md-3">
+                        <div class="card shadow mpl-hm"
+                            data-aos="fade-down"
+                            data-aos-delay="50"
+                        >
+                            <div class="card-header">
+                                <img src="{{ asset('gambar_mapel/' . $m->img ) }}" alt="{{ $m->mapel }}" width="100%">
+                            </div>
+                            <div class="card-body">
+                                <h4 class="text-center fw-bold">{{ ucwords($m->mapel) }}</h4>
+                                <div class="d-grid mt-4">
+                                    <a href="" class="btn btn-mpl">Lihat Pelajaran</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card shadow mpl-hm"
-                        data-aos="fade-down"
-                        data-aos-delay="70"
-                    >
-                        <div class="card-header">
-                            <img src="{{ asset('icon/svg/inggris.svg') }}" alt="" width="100%">
-                        </div>
-                        <div class="card-body">
-                            <h4 class="text-center fw-bold">B.Inggris</h4>
-                            <div class="d-grid mt-4">
-                                <a href="" class="btn btn-mpl">Lihat Pelajaran</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card shadow mpl-hm"
-                        data-aos="fade-down"
-                        data-aos-delay="90"
-                    >
-                        <div class="card-header">
-                            <img src="{{ asset('icon/svg/inggris.svg') }}" alt="" width="100%">
-                        </div>
-                        <div class="card-body">
-                            <h4 class="text-center fw-bold">B.Inggris</h4>
-                            <div class="d-grid mt-4">
-                                <a href="" class="btn btn-mpl">Lihat Pelajaran</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card shadow mpl-hm"
-                        data-aos="fade-down"
-                        data-aos-delay="110"
-                    >
-                        <div class="card-header">
-                            <img src="{{ asset('icon/svg/inggris.svg') }}" alt="" width="100%">
-                        </div>
-                        <div class="card-body">
-                            <h4 class="text-center fw-bold">B.Inggris</h4>
-                            <div class="d-grid mt-4">
-                                <a href="" class="btn btn-mpl">Lihat Pelajaran</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mt-4">
-                    <div class="card shadow mpl-hm"
-                        data-aos="fade-down"
-                        data-aos-delay="130"
-                    >
-                        <div class="card-header">
-                            <img src="{{ asset('icon/svg/inggris.svg') }}" alt="" width="100%">
-                        </div>
-                        <div class="card-body">
-                            <h4 class="text-center fw-bold">B.Inggris</h4>
-                            <div class="d-grid mt-4">
-                                <a href="" class="btn btn-mpl">Lihat Pelajaran</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mt-4">
-                    <div class="card shadow mpl-hm"
-                        data-aos="fade-down"
-                        data-aos-delay="150"
-                    >
-                        <div class="card-header">
-                            <img src="{{ asset('icon/svg/inggris.svg') }}" alt="" width="100%">
-                        </div>
-                        <div class="card-body">
-                            <h4 class="text-center fw-bold">B.Inggris</h4>
-                            <div class="d-grid mt-4">
-                                <a href="" class="btn btn-mpl">Lihat Pelajaran</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>

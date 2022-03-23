@@ -32,6 +32,9 @@
   {{-- Slick --}}
   <link rel="stylesheet" href="{{ asset('asset/slick/slick/slick.css') }}">
   <link rel="stylesheet" href="{{ asset('asset/slick/slick/slick-theme.css') }}">
+
+  <!-- Custom styles for this page -->
+  <link href="{{ asset('dashboard/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
   
 
 </head>
@@ -46,29 +49,6 @@
   </div>
 
   @include('Pages.Layout.Footer')
-  
-
-{{-- Slick-Js --}}
-<script>
-  $(document).ready(function(){
-      $('.mapel-item').slick({
-        dots: true,
-        infinite: false,
-        speed: 200,
-        slidesToShow: 2,
-        slidesToScroll: 2
-      });
-    });
-</script>
-
-
-{{-- AOS JS --}}
-<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-<script>
-  AOS.init({
-    disable: 'mobile'
-  });
-</script>
 
 {{-- MY JS --}}
 {{-- <script>
@@ -95,13 +75,11 @@
 
 </script>
 
-{{-- Slick --}}
-<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="{{ asset('asset/slick/slick/slick.min.js') }}"></script>
-
 {{-- JQUERY --}}
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+{{-- Slick --}}
+<script src="{{ asset('asset/slick/slick/slick.min.js') }}"></script>
 
 {{-- Owl-JS --}}
 {{-- <script src="{{ asset('') }}"></script>
@@ -112,5 +90,36 @@
 
 {{-- Bootstrap JS --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
+<script src="{{ asset('dashboard/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('dashboard/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{{ asset('dashboard/js/demo/datatables-demo.js') }}"></script>
+
+{{-- Slick-Js --}}
+<script>
+  $(document).ready(function(){
+      $('.mapel-item').slick({
+        dots: true,
+        infinite: false,
+        speed: 200,
+        slidesToShow: 2,
+        slidesToScroll: 2
+      });
+    });
+</script>
+
+
+{{-- AOS JS --}}
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+  AOS.init({
+    disable: 'mobile'
+  });
+</script>
+
+@yield('js')
+
 </body>
 </html>

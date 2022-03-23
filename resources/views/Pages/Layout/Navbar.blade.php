@@ -35,7 +35,7 @@
                     @elseif(Auth::user()->level == 'guru')
                       {{ route('dashboardGuru') }}
                     @else
-                      #
+                      {{ route('mapel') }}
                     @endif
                   ">Dashboard</a>
                 </li>
@@ -47,10 +47,6 @@
                 @else
                   <li><a class="dropdown-item" href="#">Dashboard</a></li>
                 @endif --}}
-
-                @if (Auth::user()->level == 'siswa')
-                  <li><a class="dropdown-item" href="#">Tugas Saya</a></li>
-                @endif
 
                 <li>
                   <a class="dropdown-item" href="{{ route('logout') }}"

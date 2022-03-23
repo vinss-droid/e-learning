@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Grade;
 use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\Tugas;
-use Exception;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Crypt;
+use App\Exports\ReportExcelTugasExport;
 use Illuminate\Support\Facades\Redirect;
 
 class TeachersController extends Controller
@@ -435,4 +437,156 @@ class TeachersController extends Controller
             abort(404);
         }
     }
+
+    public function pengumpulanTugas($grade, $mapel, $week)
+    {
+        $Mapel = str_replace('-', ' ', $mapel);
+
+        $grade = Grade::where('grade', $grade)->get();
+
+        foreach($grade as $g) {
+            $id_grade = $g->id;
+            $grade = $g->grade;
+        }
+
+        $cek = Mapel::where(['id_grade' => $id_grade, 'mapel' => $Mapel])->get();
+
+        try {
+            $kelas  = DB::table('kelas')
+                        ->join('grades', 'kelas.id_grade', '=', 'grades.id')
+                        ->where(['id_grade' => $id_grade])->orderBy('kelas', 'ASC')
+                        ->get();
+
+            // dd($kelas);
+
+            return view('Pages.Teachers.Mapel.Tugas.PengumpulanTugas', compact('kelas', 'Mapel', 'week', 'grade'));
+        } catch (Exception $e) {
+            abort(404);
+        }
+    }
+
+    public function pengumpulanTugasKelas($grade, $mapel, $week, $kelas)
+    {
+        $Mapel = str_replace('-', ' ', $mapel);
+
+        $Kelas = str_replace('-', ' ', $kelas);
+
+        $grade = Grade::where('grade', $grade)->get();
+
+        $cekKelas = Kelas::where('kelas', $Kelas)->get();
+
+        foreach($grade as $g) {
+            $id_grade = $g->id;
+            $grade = $g->grade;
+        }
+
+        foreach ($cekKelas as $c) {
+            $id_kelas = $c->id;
+        }
+
+        // dd($cekKelas);
+
+        $cek = Mapel::where(['id_grade' => $id_grade, 'mapel' => $Mapel])->get();
+
+        try {
+
+            foreach ($cek as $c) {
+                $id_mapel = $c->id;
+            }
+    
+            $cekTugas = Tugas::where(['week' => $week, 'id_mapel' => $id_mapel])->get();
+    
+            foreach ($cekTugas as $t) {
+                $id_tugas = $t->id;
+            }
+
+            $kelas  = DB::table('pengumpulan_tugas')
+                            ->join('tugas', 'pengumpulan_tugas.id_tugas', '=', 'tugas.id')
+                            ->join('users', 'pengumpulan_tugas.id_siswa', '=', 'users.id')
+                            ->join('mapels', 'tugas.id_mapel', '=', 'mapels.id')
+                            ->join('kelas', 'users.id_kelas', '=', 'kelas.id')
+                            ->where(['pengumpulan_tugas.id_tugas' => $id_tugas, 'kelas.id' => $id_kelas])
+                            ->select('pengumpulan_tugas.*', 'tugas.week', 'users.name', 'mapels.mapel')
+                            ->get();
+
+            // dd($kelas);
+
+            return view('Pages.Teachers.Mapel.Tugas.PengumpulanTugasKelas', compact('kelas', 'Mapel', 'week', 'grade', 'Kelas'));
+
+        } catch (Exception $e) {
+            abort(404);
+        }
+    }
+
+    public function downloadTugasSiswa($grade, $mapel, $week, $kelas, $id_siswa)
+    {
+        $Mapel = str_replace('-', ' ', $mapel);
+
+        $Kelas = str_replace('-', ' ', $kelas);
+
+        $grade = Grade::where('grade', $grade)->get();
+
+        $cekKelas = Kelas::where('kelas', $Kelas)->get();
+
+        foreach($grade as $g) {
+            $id_grade = $g->id;
+            $grade = $g->grade;
+        }
+
+        foreach ($cekKelas as $c) {
+            $id_kelas = $c->id;
+        }
+
+        // dd($cekKelas);
+
+        $cek = Mapel::where(['id_grade' => $id_grade, 'mapel' => $Mapel])->get();
+
+        try {
+
+            foreach ($cek as $c) {
+                $id_mapel = $c->id;
+            }
+    
+            $cekTugas = Tugas::where(['week' => $week, 'id_mapel' => $id_mapel])->get();
+    
+            foreach ($cekTugas as $t) {
+                $id_tugas = $t->id;
+            }
+
+            $kelas  = DB::table('pengumpulan_tugas')
+                            ->join('tugas', 'pengumpulan_tugas.id_tugas', '=', 'tugas.id')
+                            ->join('users', 'pengumpulan_tugas.id_siswa', '=', 'users.id')
+                            ->join('mapels', 'tugas.id_mapel', '=', 'mapels.id')
+                            ->join('kelas', 'users.id_kelas', '=', 'kelas.id')
+                            ->where(['pengumpulan_tugas.id_tugas' => $id_tugas, 'kelas.id' => $id_kelas, 'pengumpulan_tugas.id_siswa' => $id_siswa])
+                            ->select('pengumpulan_tugas.*', 'tugas.week', 'users.name', 'mapels.mapel')
+                            ->get();
+
+            // dd($kelas);
+
+           foreach ($kelas as $k) {
+               $file = $k->file_tugas;
+           }
+
+           $fileTugas = public_path('tugas/pengumpulan_tugas/' . $file);
+
+           return response()->download($fileTugas);
+
+        } catch (Exception $e) {
+            abort(404);
+        }
+    }
+
+    public function excelTugasKelasWeek($grade, $mapel, $week, $kelas)
+    {
+
+        $Mapel = str_replace('-', ' ', $mapel);
+
+        $Kelas = str_replace('-', ' ', $kelas);
+
+        $tgl = date('d F Y');
+
+        return Excel::download(new ReportExcelTugasExport($grade, $mapel, $week, $kelas), 'Laporan Tugas Kelas ' . $Kelas . ' Mapel ' . $Mapel . ' ' . $week . ' ' . $tgl . '.xlsx');
+    }
+
 }

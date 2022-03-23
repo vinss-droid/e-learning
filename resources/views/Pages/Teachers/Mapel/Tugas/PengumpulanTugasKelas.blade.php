@@ -1,8 +1,8 @@
 @extends('Pages.Layout.Dashboard.Dashboard')
-@section('title', "Guru - Tugas Mata Pelajaran $Mapel")
+@section('title', "Guru - Pengumpualan Tugas Mata Pelajaran $Mapel $week ")
 @section('content')
 
-<h1 class="h3 mb-2 text-gray-800 text-center">Tugas Mata Pelajaran {{ $Mapel }}</h1>
+<h1 class="h3 mb-2 text-gray-800 text-center">Pengumpualan Tugas Mata Pelajaran {{ $Mapel }} {{ $week }}</h1>
 
 @if (session('berhasil'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -29,25 +29,23 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Tugas Mata Pelajaran {{ $Mapel }}</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Pengumpualan Tugas Mata Pelajaran {{ $Mapel }} {{ $week }}</h6>
     </div>
     <div class="card-body">
         <div class="mb-4">
-            <a href="{{ route('Tmapel') }}" class="btn btn-warning btn-sm">
+            <a href="/guru/mata-pelajaran/pengumpulan-tugas/{{ $grade }}/tugas-mata-pelajaran-{{ str_replace(' ','-', $Mapel) }}/{{ $week }}" class="btn btn-warning btn-sm">
                 Kembali
             </a>
-            <a href="/guru/mata-pelajaran/{{ $grade }}/tambah-tugas-mata-pelajaran-{{ str_replace(' ','-', $Mapel) }}" class="btn btn-primary btn-sm">
-                Tambah Tugas
-            </a>
+            <a href="/guru/mata-pelajaran/report-tugas/{{ $grade }}/tugas-mata-pelajaran-{{ str_replace(' ','-', $Mapel) }}/{{ $week }}/{{ str_replace(' ', '-', $Kelas) }}" class="btn btn-success btn-sm">Download Laporan Kelas Excel</a>
         </div>
         <div class="table-responsive">
             <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th class="col-1">No</th>
-                        <th class="col-2">Tingkatan</th>
-                        <th class="col-2">Week</th>
-                        <th class="col-2">Dibuat Tanggal</th>
+                        <th class="col-2">Week Tugas</th>
+                        <th class="col-2">Nama Siswa</th>
+                        <th class="col-2">Dikumpulkan Tanggal</th>
                         <th class="col-3">Action</th>
                     </tr>
                 </thead>
@@ -56,23 +54,20 @@
                     $no = 1;
                 @endphp
                 
-                @foreach ($tugas as $t)
+                @foreach ($kelas as $k)
                     
                 <tbody>
                     <tr>
                         <td class="col-1 text-center">{{ $no++ }}</td>
-                        <td class="col-2">{{ $t->grade }}</td>
-                        <td class="col-2">{{ $t->week }}</td>
+                        <td class="col-2">{{ $k->week }}</td>
+                        <td class="col-2">{{ $k->name }}</td>
                         <td class="col-2">
-                            {{ date('d F Y H:i:s', strtotime($t->created_at)) }}
+                            {{ date('d F Y H:i:s', strtotime($k->created_at)) }}
                         </td>
                         <td class="col-3">
                             <center>
-                                <a href="/guru/mata-pelajaran/lihat/{{ $grade }}/tugas-mata-pelajaran-{{ str_replace(' ','-', $Mapel) }}/{{ $t->week }}" class="btn btn-warning btn-sm">
-                                    <i class="fa-solid fa-eye"></i> Lihat Tugas
-                                </a>
-                                <a href="/guru/mata-pelajaran/pengumpulan-tugas/{{ $grade }}/tugas-mata-pelajaran-{{ str_replace(' ', '-', $Mapel) }}/{{ $t->week }}" class="btn btn-success btn-sm">
-                                    <i class="fa-solid fa-book-open"></i> Pengumpulan Tugas
+                                <a href="/guru/mata-pelajaran/download-tugas/{{ $grade }}/tugas-mata-pelajaran-{{ str_replace(' ', '-', $Mapel) }}/{{ $week }}/{{ str_replace(' ', '-', $Kelas) }}/{{ $k->id_siswa }}" class="btn btn-success btn-sm">
+                                    <i class="fa-solid fa-download"></i> Download Tugas
                                 </a>
                             </center>
                         </td>
